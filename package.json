@@ -1,0 +1,1 @@
+{"name":"bagavathy-professional-portfolio","version":"1.0.0","private":true,"scripts":{"start":"cd backend && npm start","dev":"cd backend && npm run dev"},"description":"Full-stack personal portfolio for Bagavathy M"}

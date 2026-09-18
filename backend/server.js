@@ -1,0 +1,16 @@
+const express=require("express"),cors=require("cors"),helmet=require("helmet"),rateLimit=require("express-rate-limit"),path=require("path");
+require("dotenv").config();
+const app=express();
+app.use(helmet());
+app.use(cors({origin:process.env.CORS_ORIGIN||"http://localhost:5500"}));
+app.use(express.json({limit:"50kb"}));
+app.use(rateLimit({windowMs:Number(process.env.RATE_LIMIT_WINDOW_MS||900000),max:Number(process.env.RATE_LIMIT_MAX||100),standardHeaders:true,legacyHeaders:false}));
+app.get("/api/health",(req,res)=>res.json({success:true,data:{status:"ok"}}));
+app.use("/api/projects",require("./routes/projects"));
+app.use("/api/experiences",require("./routes/experience"));
+app.use("/api/certifications",require("./routes/certifications"));
+app.use("/api/contact",require("./routes/contact"));
+app.use((req,res)=>res.status(404).json({success:false,message:"Route not found"}));
+app.use(require("./middleware/errorHandler"));
+const port=Number(process.env.PORT||5000);
+app.listen(port,()=>console.log(`Backend running at http://localhost:${port}`));
